@@ -1,5 +1,5 @@
 import React,{ useState } from 'react';
-import { View, Text, StyleSheet, Colors, TextInput, TouchableOpacity, Pressable } from "react-native"
+import { View, Text, StyleSheet, Colors, TextInput, TouchableOpacity, Pressable,ScrollView } from "react-native"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Picker } from "@react-native-picker/picker";
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
@@ -10,7 +10,9 @@ const Form = ({navigation}) => {
     const [text, onChangeText] = useState({
         asal: '',
         tujuan: '',
+        layanan: '',
         tanggal: '',
+        jam: '',
     });
 
     const handleText = (textInput) => {
@@ -21,59 +23,92 @@ const Form = ({navigation}) => {
     
     return (
         <View style={Style.container}>
-            <View>
-                <Text style={Style.title}>
-                    Kapalzy
-                </Text>
-            </View>
-            <View style={Style.label}>
-                <Text style={Style.text}>Pelabuhan Awal</Text>
-                <View style={Style.field}>
-                    <FontAwesome style={Style.icon} name="ship" size={20} />
+            <ScrollView>
+                <View>
+                    <Text style={Style.title}>
+                        Kapalzy
+                    </Text>
+                </View>
+                <View style={Style.label}>
+                    
+                    <Text style={Style.text}>Pelabuhan Awal</Text>
+                    <View style={Style.field}>
+                        <FontAwesome style={Style.icon} name="ship" size={30} />
+                        <Picker
+                            selectedValue={text}
+                            style={{width: 280 }}
+                            onValueChange={(itemValue) => onChangeText({...text, asal: itemValue})}
+                        >
+                            <Picker.Item label='Pilih Pelabuhan Awal' value='0' />
+                            <Picker.Item label="Jawa" value="Jawa" />
+                            <Picker.Item label="Sumatera" value="Sumatera" />
+                            <Picker.Item label="Kalimanatan" value="Kalimantan" />
+                            <Picker.Item label="Sulawesi" value="Sulawesi" />
+                            <Picker.Item label="Bali" value="Bali" />
+                        </Picker>
+                        {/* <TextInput
+                            style={Style.input}
+                            placeholder="Pilih Pelabuhan Awal"
+                            value={text.asal}
+                            onChangeText={handleText('asal')}
+                        />  */}
+                    </View>
+                    <Text style={Style.text}>Pelabuhan Tujuan</Text>
+                    <View style={Style.field}>
+                    <FontAwesome style={Style.icon} name="ship" size={30} />
                     <Picker
-                        selectedValue={text}
-                        style={{ height: 50, width: 150 }}
-                        onValueChange={(itemValue) => onChangeText({...text, tujuan: itemValue})}
+                            selectedValue={text}
+                            style={{width: 280 }}
+                            onValueChange={(itemValue) => onChangeText({...text, tujuan: itemValue})}
+                        >
+                            <Picker.Item label='Pilih Pelabuhan Tujuan' value='0' />
+                            <Picker.Item label="Jawa" value="Jawa" />
+                            <Picker.Item label="Sumatera" value="Sumatera" />
+                            <Picker.Item label="Kalimanatan" value="Kalimantan" />
+                            <Picker.Item label="Sulawesi" value="Sulawesi" />
+                            <Picker.Item label="Bali" value="Bali" />
+                        </Picker>
+                    </View>
+                    <Text style={Style.text}>Kelas Layanan</Text>
+                    <View style={Style.field}>
+                    <FontAwesome style={Style.icon} name="bed" size={30} />
+                    <Picker
+                            selectedValue={text}
+                            style={{width: 280 }}
+                            onValueChange={(itemValue) => onChangeText({...text, layanan: itemValue})}
+                        >
+                            <Picker.Item label='Pilih Layanan' value='0' />
+                            <Picker.Item label="Ekonomi" value="Ekonomi" />
+                        </Picker>
+                    </View>
+                    <Text style={Style.text}>Tanggal Masuk Pelabuhan</Text>
+                    <View style={Style.field}>
+                        <FontAwesome style={Style.icon} name="calendar" size={30} />
+                        {/* <TextInput
+                            style={Style.Input}
+                            placeholder="Pilih Tanggal Masuk"
+                            value={text.tujuan}
+                            onChangeText={handleText('tujuan')}
+                        /> */}
+                    </View>
+                    <Text style={Style.text}>Jam Masuk Pelabuhan</Text>
+                    <View style={Style.field}>
+                        <FontAwesome style={Style.icon} name="clock-o" size={30} />
+                        {/* <TextInput
+                            style={Style.input}
+                            placeholder="Pilih Jam Masuk"
+                            value={text.tanggal}
+                            onChangeText={handleText('tanggal')}
+                        /> */}
+                    </View>
+                    <Pressable
+                        style={Style.button}
+                        onPress={() => navigation.navigate('Result',{data: text})}
                     >
-                        <Picker.Item label="Haneda" value="Haneda" />
-                        <Picker.Item label="Soekarno Hatta" value="Soekarno Hatta" />
-                        <Picker.Item label="Soekarno Hatta" value="Soekarno Hatta" />
-                        <Picker.Item label="Soekarno Hatta" value="Soekarno Hatta" />
-                        <Picker.Item label="Soekarno Hatta" value="Soekarno Hatta" />
-                    </Picker>
-                    {/* <TextInput
-                        style={Style.input}
-                        placeholder="Pilih Pelabuhan Awal"
-                        value={text.asal}
-                        onChangeText={handleText('asal')}
-                    />  */}
+                        <Text style={Style.text2}>Buat Tiket</Text>
+                    </Pressable>
                 </View>
-                <Text style={Style.text}>Pelabuhan Tujuan</Text>
-                <View style={Style.field}>
-                    <TextInput
-                        style={Style.Input}
-                        placeholder="Pilih Pelabuhan Tujuan"
-                        value={text.tujuan}
-                        onChangeText={handleText('tujuan')}
-                    />
-                </View>
-                <Text style={Style.text}>Tanggal asal</Text>
-                <View style={Style.field}>
-                    <TextInput
-                        style={Style.input}
-                        placeholder="Masukkan Tanggal asal"
-                        value={text.tanggal}
-                        onChangeText={handleText('tanggal')}
-                        keyboardType="numeric"
-                    />
-                </View>
-                <Pressable
-                    style={Style.button}
-                    onPress={() => navigation.navigate('Result')}
-                >
-                    <Text style={Style.text2}>Buat Tiket</Text>
-                </Pressable>
-            </View>
+            </ScrollView>
         </View>
     )
 }
@@ -84,7 +119,7 @@ function Result({navigation}) {
         <Text>ResultPage</Text>
         <Pressable
           onPress={() => {
-            navigation.navigate('SearchPage');
+            navigation.navigate('Form');
           }}>
           <Text>Back</Text>
         </Pressable>
@@ -109,15 +144,15 @@ const Style = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#00579C',
-        marginBottom: 20
+        marginBottom: 5
     },
     container:{
         backgroundColor: '#fff',
         borderRadius: 5,
-        padding: 50,
+        padding: 10,
         width: '80%',
-        position: 'absolute',
-        marginTop: "10%",
+        marginTop: "5%",
+        marginBottom: "5%",
         left: '10%',
         shadowColor: '#000',
         elevation: 5,
@@ -129,10 +164,11 @@ const Style = StyleSheet.create({
         flex: 0,
         flexDirection: 'row',
         alignItems: 'center',
-        borderWidth: 2.1,
+        borderWidth: 1,
         borderRadius: 5,
         marginTop: 10,
-        marginBottom: 30,
+        marginBottom: 10,
+        padding: 5,
     },
     text:{
         fontSize: 16,
@@ -144,7 +180,7 @@ const Style = StyleSheet.create({
         color: '#424242',
     },
     button:{
-        marginTop: 20,
+        marginTop: 10,
         flex: 0,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -159,6 +195,7 @@ const Style = StyleSheet.create({
         padding: 5,
         color: '#fff',
     },
+
 })
 
 export default Feed
