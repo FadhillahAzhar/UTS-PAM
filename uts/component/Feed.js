@@ -1,5 +1,5 @@
 import React,{ useState } from 'react';
-import { View, Text, StyleSheet, Colors, TextInput, TouchableOpacity, Pressable,ScrollView } from "react-native"
+import { View, Text, StyleSheet, Colors, TextInput, TouchableOpacity, Pressable,ScrollView,Modal } from "react-native"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Picker } from "@react-native-picker/picker";
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
@@ -12,8 +12,8 @@ const Form = ({navigation}) => {
         asal: 'Jawa',
         tujuan: 'Sumatera',
         layanan: 'Ekonomi',
-        // tanggal: '',
-        // jam: '',
+        tanggal: 'Kamis,17 Maret 2020',
+        jam: '15.30 WIB',
     });
 
     // const handleText = (textInput) => {
@@ -85,6 +85,17 @@ const Form = ({navigation}) => {
                     <Text style={Style.text}>Tanggal Masuk Pelabuhan</Text>
                     <View style={Style.field}>
                         <FontAwesome style={Style.icon} name="calendar" size={30} />
+                        <Picker
+                            selectedValue={text}
+                            style={{width: 280 }}
+                            onValueChange={(itemValue) => onChangeText({...text, tanggal: itemValue})}
+                        >
+                            {/* <Picker.Item label='Pilih Layanan' value='0' /> */}
+                            <Picker.Item label="Kamis,17 Maret 2020" value="Kamis,17 Maret 2020"/>
+                            <Picker.Item label="Jumat,18 Maret 2020" value="Jumat,18 Maret 2020"/>
+                            <Picker.Item label="Sabtu,19 Maret 2020" value="Sabtu,19 Maret 2020"/>
+                            <Picker.Item label="Minggu,20 Maret 2020" value="Minggu,20 Maret 2020"/>
+                        </Picker>
                         {/* <TextInput
                             style={Style.Input}
                             placeholder="Pilih Tanggal Masuk"
@@ -95,6 +106,16 @@ const Form = ({navigation}) => {
                     <Text style={Style.text}>Jam Masuk Pelabuhan</Text>
                     <View style={Style.field}>
                         <FontAwesome style={Style.icon} name="clock-o" size={30} />
+                        <Picker
+                            selectedValue={text}
+                            style={{width: 280 }}
+                            onValueChange={(itemValue) => onChangeText({...text, jam: itemValue})}
+                        >
+                            {/* <Picker.Item label='Pilih Layanan' value='0' /> */}
+                            <Picker.Item label="15.30 WIB" value="15.30 WIB"/>
+                            <Picker.Item label="16.30 WIB" value="16.30 WIB"/>
+                            <Picker.Item label="17.30 WIB" value="17.30 WIB"/>
+                        </Picker>
                         {/* <TextInput
                             style={Style.input}
                             placeholder="Pilih Jam Masuk"
@@ -130,7 +151,9 @@ function Result({route, navigation}) {
             return( 
                 item.asal == data.asal &&
                 item.tujuan == data.tujuan &&
-                item.layanan == data.layanan
+                item.layanan == data.layanan &&
+                item.tanggal == data.tanggal &&
+                item.jam == data.jam
             )
         })
         return newJadwal
@@ -139,8 +162,8 @@ function Result({route, navigation}) {
     console.log(check())
     const x = check()
 
-    data['jam'] = x.jam
-    data['tanggal'] = x.tanggal
+    // data['jam'] = x.jam
+    // data['tanggal'] = x.tanggal
     data['harga'] = x.harga
     
     return (        
@@ -150,8 +173,13 @@ function Result({route, navigation}) {
             <Text>{"\n"}{"\n"}Rincian Tiket</Text>
             <View style={Style.container2}>
                 <Text>{data.asal} -- {data.tujuan}</Text>
-                <Text>Jadwal Masuk Pelabuhan{"\n"}{data.tanggal}{"\n"}{data.jam}</Text>
-                <Text>Layanan{"\n"}{data.layanan}</Text>
+                <Text>Jadwal Masuk Pelabuhan{"\n"}{data.tanggal}{"\n"}{"\n"}{data.jam}{"\n"}</Text>
+                <Text>Layanan{"\n"}{data.layanan}{"\n"}</Text>
+                <View style={{borderBottomColor: 'black',borderBottomWidth: 1,}}/>
+                <Text>{"\n"}Dewasa x1                        Rp. 100.000</Text>
+            </View>
+            <View>
+                <Text style={Style.total}>         Total                                        Rp. 100.000 </Text>
             </View>
             <View style={Style.wrapper}> 
                 <Pressable
@@ -193,8 +221,10 @@ function Detail({route, navigation}) {
             <Text>{"\n"}{"\n"}Informasi Pemesanan</Text>
             <View style={Style.container3}>
                 <Text>{data.asal} -- {data.tujuan}</Text>
-                <Text>Jadwal Masuk Pelabuhan{"\n"}{data.tanggal}{"\n"}{data.jam}</Text>
+                <Text>Jadwal Masuk Pelabuhan{"\n"}{data.tanggal}{"\n"}{"\n"}{data.jam}{"\n"}</Text>
                 <Text>Layanan{"\n"}{data.layanan}</Text>
+                <View style={{borderBottomColor: 'black',borderBottomWidth: 1,}}/>
+                <Text>{"\n"}Dewasa x1                        Rp. 100.000</Text>
             </View>
             <Text>{"\n"}Data Pemesan</Text>
             <Text style={Style.text}>Nama Lengkap</Text>
@@ -227,7 +257,11 @@ function Detail({route, navigation}) {
             
             <Pressable
                 style={Style.button}
-                onPress={() => navigation.navigate('Result')}
+                // onPress={() => navigation.navigate('Pesanan', { data: data })}
+                onPress={() => navigation.navigate('Pesanan', {
+                    screen: 'DetailPesanan',
+                    params: { data:data },
+                  })}
             >
                 <Text style={Style.text2}>Submit</Text>
             </Pressable>
@@ -378,6 +412,9 @@ const Style = StyleSheet.create({
         shadowColor: '#000',
         elevation: 5,
     },
+    total:{
+        top: -80,
+    }
 
 })
 
